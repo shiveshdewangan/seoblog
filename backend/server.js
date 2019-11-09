@@ -14,14 +14,19 @@ const authRoutes = require("./routes/auth");
 const app = express();
 
 // db
+// process.env.DATABASE_LOCAL
 mongoose
-  .connect(process.env.DATABASE_CLOUD, {
+  .connect(process.env.DATABASE_LOCAL, {
     useNewUrlParser: true,
     useCreateIndex: true,
-    useFindAndModify: false
+    useFindAndModify: false,
+    useUnifiedTopology: true
   })
   .then(() => {
     console.log("DB Connected");
+  })
+  .catch((err) => {
+    console.log("Error", err);
   });
 
 // middlewares
@@ -39,7 +44,7 @@ app.use("/api", blogRoutes);
 app.use("/api", authRoutes);
 
 // port
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8000;
 
 // server
 app.listen(port, () => {
